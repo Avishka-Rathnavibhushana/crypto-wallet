@@ -62,9 +62,9 @@ const Wallet: NextPage = () => {
           <h1>Dashboard</h1>
 
           <Paragraph
-            copyable={{ text: account.publicKey.toString(), tooltips: `Copy` }}
+            copyable={{ text: JSON.parse(JSON.stringify(account)).address, tooltips: `Copy` }}
           >
-            {`Account: ${displayAddress(account.publicKey.toString())}`}
+            {`Account: ${displayAddress(JSON.parse(JSON.stringify(account)).address)}`}
           </Paragraph>
 
           <p>

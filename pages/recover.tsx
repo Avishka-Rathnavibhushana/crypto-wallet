@@ -5,6 +5,8 @@ import { Form, Input, Button } from "antd";
 import { useGlobalState } from "../context";
 import { LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
+import Web3 from "web3";
+import * as Bip39 from "bip39";
 
 // Import Bip39 to convert a phrase to a seed:
 
@@ -28,18 +30,24 @@ const Recover: NextPage = () => {
     // (a) review the import guidance on lines 9 and 11
     // (b) convert the mnemonic to seed bytes
     // Documentation Reference: https://github.com/bitcoinjs/bip39
-    const seed = new Uint8Array();
+    const seed = Bip39.mnemonicToSeedSync(inputMnemonic).slice(0, 32).toString('utf8');
 
     // (c) use the seed to import the account (i.e. keypair)
     // Documentation Reference:
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
-    const importedAccount = null;
+    var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
+    const wallet = web3.eth.accounts.wallet.create(1 ,seed);
+    console.log("asf")
+    console.log(wallet)
+    const importedAccount =  web3.eth.accounts.create(seed);
+    console.log("Ds")
+    console.log(importedAccount);
     setAccount(importedAccount);
 
     // (d) You can now delete the console.log statement since the function is implemented!
   };
-
+  
   useEffect(() => {
     if (account) {
       router.push("/wallet");

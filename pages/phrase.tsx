@@ -5,6 +5,10 @@ import PhraseBox from "../components/PhraseBox";
 import { useGlobalState } from "../context";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import * as Bip39 from "bip39";
+import Web3 from "web3";
+import {Wallet} from "ethers";
+
 
 // Import Bip39 to generate a phrase and convert it to a seed:
 
@@ -22,23 +26,37 @@ const Phrase: NextPage = () => {
     // (a) review the import guidance on lines 9 and 11
     // (b) generate a mnemonic phrase by importing Bip39 and then implementing the appropriate method on the imported Bip39 instance
     // Documentation Reference: https://github.com/bitcoinjs/bip39
-    const generatedMnemonic = "";
+    const generatedMnemonic = Bip39.generateMnemonic();
 
     // This line saves the mnemonic phrase to context state so we can display it for the wallet user to copy
     setMnemonic(generatedMnemonic);
 
     // (c) convert the mnemonic to seed bytes and make sure it's 32-bytes (Hint: console log the seed to see how many bytes you have vs how many you need)
     // Documentation Reference: https://github.com/bitcoinjs/bip39
-    const seed = new Uint8Array();
+    const seed = Bip39.mnemonicToSeedSync(generatedMnemonic).slice(0, 32).toString('utf8');  //slice 64 byte seed from 0-32 to get first 32 bytes
+    console.log(seed);
 
     // (d) use the seed to generate a new account (i.e. a new keypair)
     // Documentation Reference:
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
-    const newAccount = null;
+    
+    var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
+    const wallet = web3.eth.accounts.wallet.create(1 ,seed);;
+    const newAccount =  web3.eth.accounts.create(seed);
+    console.log("Ds")
+    console.log(newAccount);
+    console.log("asf")
+    console.log(wallet)
 
-    // This line sets the account to context state so it can be used by the app
-    setAccount(newAccount);
+    console.log("eathersWallet");
+    const eathersWallet = Wallet.fromMnemonic(generatedMnemonic);
+    console.log(eathersWallet);
+    console.log("new eathersWallet");
+    const eathersWalletnew = Wallet.fromMnemonic(generatedMnemonic);
+    console.log(eathersWalletnew);
+    // // This line sets the account to context state so it can be used by the app
+     setAccount(newAccount);
   }, []);
 
   const showPopconfirm = () => {

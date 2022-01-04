@@ -1,9 +1,10 @@
 // Import any additional classes and/or functions needed from Solana's web3.js library as you go along:
 import { Cluster, Keypair } from "@solana/web3.js";
 import { message } from "antd";
+import Web3 from "web3";
 
 // *Step 3*: implement a function that gets an account's balance
-const refreshBalance = async (network: Cluster | undefined, account: Keypair | null) => {
+const refreshBalance = async (network: Cluster | undefined, account: Object | null) => {
   // This line ensures the function returns before running if no account has been set
   if (!account) return 0;
 
@@ -13,16 +14,16 @@ const refreshBalance = async (network: Cluster | undefined, account: Keypair | n
     // Documentation References:
     //   https://solana-labs.github.io/solana-web3.js/classes/Connection.html
     //   https://solana-labs.github.io/solana-web3.js/modules.html#clusterApiUrl
-    console.log("Balance functionality not implemented yet!");
+    var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
     const connection = "";
 
     // (c) get the key using one of the accessors on the account passed in as an argument
     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
-    const publicKey = "";
+    const publicKey = JSON.parse(JSON.stringify(account)).address
 
     // (d) get the account's balance using the connection instance
     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-    const balance = 0;
+    const balance =  Number(await web3.eth.getBalance(publicKey));
 
     return balance;
     // (e) You can now delete the console.log statement since the function is implemented!
@@ -35,7 +36,7 @@ const refreshBalance = async (network: Cluster | undefined, account: Keypair | n
 };
 
 // *Step 4*: implement a function that airdrops SOL into devnet account
-const handleAirdrop = async (network: Cluster, account: Keypair | null) => {
+const handleAirdrop = async (network: Cluster | undefined, account: Object | null) => {
   // This line ensures the function returns before running if no account has been set
   if (!account) return;
 
