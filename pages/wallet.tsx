@@ -4,7 +4,7 @@ import { Button, Tooltip, Drawer, Typography } from "antd";
 import { useGlobalState } from "../context";
 import { useRouter } from "next/router";
 import TransactionLayout from "../components/TransactionLayout";
-import { refreshBalance, handleAirdrop } from "../utils";
+import { refreshBalance } from "../utils";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import {
   Dashboard,
@@ -35,14 +35,14 @@ const Wallet: NextPage = () => {
       });
   }, [account, router, network]);
 
-  const airdrop = async () => {
-    setAirdropLoading(true);
-    const updatedBalance = await handleAirdrop(network, account);
-    if (typeof updatedBalance === "number") {
-      setBalance(updatedBalance);
-    }
-    setAirdropLoading(false);
-  };
+  // const airdrop = async () => {
+  //   setAirdropLoading(true);
+  //   const updatedBalance = await handleAirdrop(network, account);
+  //   if (typeof updatedBalance === "number") {
+  //     setBalance(updatedBalance);
+  //   }
+  //   setAirdropLoading(false);
+  // };
 
   const showModal = () => {
     setVisible(true);
@@ -50,6 +50,16 @@ const Wallet: NextPage = () => {
 
   const handleClose = () => {
     setVisible(false);
+  };
+
+  const refresh = () => {
+    refreshBalance(network, account)
+      .then((updatedBalance) => {
+        setBalance(updatedBalance);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const displayAddress = (address: string) =>
@@ -60,7 +70,7 @@ const Wallet: NextPage = () => {
       {account && (
         <Dashboard>
           <h1>Dashboard</h1>
-
+          <Button onClick={refresh}> Refresh</Button>
           <Paragraph
             copyable={{ text: JSON.parse(JSON.stringify(account)).address, tooltips: `Copy` }}
           >
@@ -70,7 +80,7 @@ const Wallet: NextPage = () => {
           <p>
             Connected to{" "}
             {network &&
-              (network === "mainnet-beta"
+              (network === "homestead"
                 ? network.charAt(0).toUpperCase() + network.slice(1, 7)
                 : network.charAt(0).toUpperCase() + network.slice(1))}
           </p>
@@ -80,11 +90,11 @@ const Wallet: NextPage = () => {
             </h2>
           ) : (
             <h2>
-              {balance} <span>SOL</span>
+              {balance} <span>ETH</span>
             </h2>
           )}
 
-          {network === "devnet" && account && (
+          {/* {network === "devnet" && account && (
             <>
               <Airdrop onClick={airdrop}>Airdrop</Airdrop>
               <Tooltip
@@ -94,7 +104,7 @@ const Wallet: NextPage = () => {
                 <Question>?</Question>
               </Tooltip>
             </>
-          )}
+          )} */}
 
           <Button type="primary" onClick={showModal}>
             Send <ArrowRightOutlined />

@@ -2,9 +2,11 @@
 import { Cluster, Keypair } from "@solana/web3.js";
 import { message } from "antd";
 import Web3 from "web3";
+import { Provider } from "@ethersproject/abstract-provider";
+import { Wallet,BigNumber, utils } from "ethers";
 
 // *Step 3*: implement a function that gets an account's balance
-const refreshBalance = async (network: Cluster | undefined, account: Object | null) => {
+const refreshBalance = async (network: String | undefined, account: Wallet | null) => {
   // This line ensures the function returns before running if no account has been set
   if (!account) return 0;
 
@@ -14,18 +16,19 @@ const refreshBalance = async (network: Cluster | undefined, account: Object | nu
     // Documentation References:
     //   https://solana-labs.github.io/solana-web3.js/classes/Connection.html
     //   https://solana-labs.github.io/solana-web3.js/modules.html#clusterApiUrl
-    var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
     const connection = "";
 
     // (c) get the key using one of the accessors on the account passed in as an argument
     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
-    const publicKey = JSON.parse(JSON.stringify(account)).address
 
     // (d) get the account's balance using the connection instance
     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-    const balance =  Number(await web3.eth.getBalance(publicKey));
+    var balance = await account.getBalance();
+    balance = BigNumber.from(balance);
+    const balanceString = Number(utils.formatEther(balance));
+    console.log("balance:" + balanceString.toString());
 
-    return balance;
+    return balanceString;
     // (e) You can now delete the console.log statement since the function is implemented!
   } catch (error) {
     const errorMessage =
@@ -35,43 +38,43 @@ const refreshBalance = async (network: Cluster | undefined, account: Object | nu
   }
 };
 
-// *Step 4*: implement a function that airdrops SOL into devnet account
-const handleAirdrop = async (network: Cluster | undefined, account: Object | null) => {
-  // This line ensures the function returns before running if no account has been set
-  if (!account) return;
+// // *Step 4*: implement a function that airdrops SOL into devnet account
+// const handleAirdrop = async (network: Cluster | undefined, account: Object | null) => {
+//   // This line ensures the function returns before running if no account has been set
+//   if (!account) return;
 
-  try {
-    // (a) review the import guidance on line 1
-    // (b) instantiate a connection using clusterApiUrl with the active network passed in as an argument
-    // Documentation References:
-    //   https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-    //   https://solana-labs.github.io/solana-web3.js/modules.html#clusterApiUrl
-    console.log("Airdrop functionality not implemented yet!");
-    const connection = "";
+//   try {
+//     // (a) review the import guidance on line 1
+//     // (b) instantiate a connection using clusterApiUrl with the active network passed in as an argument
+//     // Documentation References:
+//     //   https://solana-labs.github.io/solana-web3.js/classes/Connection.html
+//     //   https://solana-labs.github.io/solana-web3.js/modules.html#clusterApiUrl
+//     console.log("Airdrop functionality not implemented yet!");
+//     const connection = "";
 
-    // (c) get the key using one of the accessors on the account passed in as an argument
-    // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
-    const publicKey = "";
+//     // (c) get the key using one of the accessors on the account passed in as an argument
+//     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
+//     const publicKey = "";
 
-    // (d) request the airdrop using the connection instance
-    // Note that you should include the amount to airdrop (consider using the LAMPORTS_PER_SOL constant from the web3.js library)
-    // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-    const confirmation = "";
+//     // (d) request the airdrop using the connection instance
+//     // Note that you should include the amount to airdrop (consider using the LAMPORTS_PER_SOL constant from the web3.js library)
+//     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
+//     const confirmation = "";
 
-    // (d) confirm the transaction using the connection instance and the confirmation string returned from the airdrop
-    // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-    const result = "";
+//     // (d) confirm the transaction using the connection instance and the confirmation string returned from the airdrop
+//     // Documentation Reference: https://solana-labs.github.io/solana-web3.js/classes/Connection.html
+//     const result = "";
 
-    // (e) Refactor the refreshBalance function to return balances in SOL instead of Lamports (Hint: LAMPORTS_PER_SOL)
+//     // (e) Refactor the refreshBalance function to return balances in SOL instead of Lamports (Hint: LAMPORTS_PER_SOL)
 
-    // This line returns the balance after the airdrop so the UI can be refreshed
-    return await refreshBalance(network, account);
-    // (f) You can now delete the console.log statement since the function is implemented!
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown Error";
-    message.error(`Airdrop failed: ${errorMessage}`);
-  }
-};
+//     // This line returns the balance after the airdrop so the UI can be refreshed
+//     return await refreshBalance(network, account);
+//     // (f) You can now delete the console.log statement since the function is implemented!
+//   } catch (error) {
+//     const errorMessage =
+//       error instanceof Error ? error.message : "Unknown Error";
+//     message.error(`Airdrop failed: ${errorMessage}`);
+//   }
+// };
 
-export { refreshBalance, handleAirdrop };
+export { refreshBalance };

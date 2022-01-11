@@ -12,6 +12,9 @@ import styles from "./index.module.css";
 import { useGlobalState } from "../../context";
 import { useRouter } from "next/router";
 import { Cluster } from "@solana/web3.js";
+import { Wallet, utils } from "ethers";
+import { InfuraProvider } from "@ethersproject/providers";
+import { refreshBalance } from "../../utils";
 
 type DomEvent = {
   domEvent: BaseSyntheticEvent;
@@ -20,34 +23,41 @@ type DomEvent = {
 };
 
 const Layout = ({ children }: { children: JSX.Element }): ReactElement => {
-  const { network, setNetwork, account, setAccount, setBalance, setMnemonic } =
+  const { network, setNetwork,mnemonic, account, setAccount, setBalance, setMnemonic } =
     useGlobalState();
 
   const router = useRouter();
 
-  const selectNetwork = (e: DomEvent) => {
-    const networks: Array<Cluster> = ["mainnet-beta", "devnet", "testnet"];
+  const selectNetwork = async (e: DomEvent) => {
+    const networks: Array<string> = ["homestead", "rinkeby"];
     const selectedNetwork = networks[parseInt(e.key) - 1];
     setNetwork(selectedNetwork);
+
+    var inputMnemonic = mnemonic == null ? "":mnemonic;
+    const wallet = Wallet.fromMnemonic(inputMnemonic, `m/44'/60'/0'/0/0`);
+    const preAccount = account == null? wallet: account;
+    var provider = new InfuraProvider(selectedNetwork, "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    const newAccount =  preAccount.connect(provider);
+    // // This line sets the account to context state so it can be used by the app
+    setAccount(newAccount);
+    
+    await refreshBalance(selectedNetwork,newAccount);
   };
 
   const menu = (
     <Menu>
       <Menu.Item onClick={selectNetwork} key="1">
-        Mainnet {network === "mainnet-beta" && <Badge status="processing" />}
+        Mainnet {network === "homestead" && <Badge status="processing" />}
       </Menu.Item>
       <Menu.Item onClick={selectNetwork} key="2">
-        Devnet {network === "devnet" && <Badge status="processing" />}
-      </Menu.Item>
-      <Menu.Item onClick={selectNetwork} key="3">
-        Testnet {network === "testnet" && <Badge status="processing" />}
+        Rinkeby {network === "rinkeby" && <Badge status="processing" />}
       </Menu.Item>
     </Menu>
   );
 
   const handleLogout = () => {
     setAccount(null);
-    setNetwork("devnet");
+    setNetwork("homestead");
     setBalance(0);
     setMnemonic("");
     router.push("/");

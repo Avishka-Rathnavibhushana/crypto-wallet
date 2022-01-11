@@ -22,7 +22,7 @@ const RestoreAccount = (): ReactElement => {
         />
         <h2>Import Wallet</h2>
         <p>
-          Use your secret recovery phrase to restore an existing Solana wallet.
+          Use your secret recovery phrase to restore an existing Etherium wallet.
         </p>
 
       <div className={"buttons"}>

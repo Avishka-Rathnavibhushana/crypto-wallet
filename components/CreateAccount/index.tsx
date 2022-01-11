@@ -22,7 +22,7 @@ const CreateAccount = (): ReactElement => {
       />
       <h2>New to MyWallet?</h2>
       <p>
-        Create a new wallet to send, receive and swap Solana digital assets.
+        Create a new wallet to send, receive and swap Etherium digital assets.
       </p>
 
       <div className={"buttons"}>

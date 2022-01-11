@@ -1,11 +1,14 @@
 import React, { createContext, useContext } from "react";
 import { Keypair, Cluster } from "@solana/web3.js";
+import { Wallet } from "ethers";
+import { Provider } from "@ethersproject/abstract-provider";
+import { InfuraProvider } from "@ethersproject/providers";
 
 export type GlobalContextType = {
-  network: Cluster | undefined;
-  setNetwork: React.Dispatch<React.SetStateAction<Cluster | undefined>>;
-  account: Object | null;
-  setAccount: React.Dispatch<React.SetStateAction<Object | null>>;
+  network: String | undefined;
+  setNetwork: React.Dispatch<React.SetStateAction<String | undefined>>;
+  account: Wallet | null;
+  setAccount: React.Dispatch<React.SetStateAction<Wallet | null>>;
   mnemonic: string | null;
   setMnemonic: React.Dispatch<React.SetStateAction<string | null>>;
   balance: number | null;
@@ -13,7 +16,7 @@ export type GlobalContextType = {
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
-  network: "devnet",
+  network: "homestead",
   setNetwork: () => null,
   account: null,
   setAccount: () => null,

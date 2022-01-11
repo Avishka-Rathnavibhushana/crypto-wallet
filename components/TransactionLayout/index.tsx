@@ -19,6 +19,8 @@ import {
   RatioText,
 } from "../../styles/StyledComponents.styles";
 
+import {Wallet, utils, BigNumber} from "ethers";
+
 type FormT = {
   from: string;
   to: string;
@@ -83,16 +85,29 @@ const TransactionModal = (): ReactElement => {
       //   note: signers is an array with a single item - an object with two properties
       const signers = [{}];
 
+      var tx = {
+        to: "0xC8b1a4B84d9578EA521c15C2d40982b09D1a0684",
+        value: utils.parseEther((form.amount/1000).toString())
+      }
+
       setSending(true);
       // (f) send the transaction and await its confirmation
       // Documentation Reference: https://solana-labs.github.io/solana-web3.js/modules.html#sendAndConfirmTransaction
       const confirmation = "";
       setTransactionSig(confirmation);
+      var wallet = account;
+      await wallet.signTransaction(tx);
+      await wallet.sendTransaction(tx);
+      
       setSending(false);
 
+      
+      console.log(balance);
       if (network) {
         const updatedBalance = await refreshBalance(network, account);
         setBalance(updatedBalance);
+        console.log(balance);
+        console.log(updatedBalance);
         message.success(`Transaction confirmed`);
       }
       // (g) You can now delete the console.log statement since the function is implemented!
@@ -131,6 +146,7 @@ const TransactionModal = (): ReactElement => {
         <AmountInput
           value={form.amount}
           onChange={(e) => onFieldChange("amount", e.target.value)}
+          
         />
         <AmountText>
           {form.amount <= 0 ? "" : converter.toWords(form.amount)}
@@ -150,7 +166,7 @@ const TransactionModal = (): ReactElement => {
             onClick={transfer}
             disabled={
               !balance ||
-              form.amount / LAMPORTS_PER_SOL > balance ||
+              form.amount/1000 > balance ||
               !form.to ||
               form.amount == 0
             }
@@ -159,7 +175,7 @@ const TransactionModal = (): ReactElement => {
             Sign and Send
           </SignatureInput>
         )}
-        <RatioText>1 $SOL = 1,000,000,000 $L</RatioText>
+        <RatioText>1 $Eth = 1,000 $miliether</RatioText>
       </CheckContainer>
     </>
   );

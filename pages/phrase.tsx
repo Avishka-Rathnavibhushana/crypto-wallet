@@ -7,7 +7,8 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import * as Bip39 from "bip39";
 import Web3 from "web3";
-import {Wallet} from "ethers";
+import { Wallet, utils } from "ethers";
+import { InfuraProvider } from "@ethersproject/providers";
 
 
 // Import Bip39 to generate a phrase and convert it to a seed:
@@ -41,20 +42,9 @@ const Phrase: NextPage = () => {
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
     
-    var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
-    const wallet = web3.eth.accounts.wallet.create(1 ,seed);;
-    const newAccount =  web3.eth.accounts.create(seed);
-    console.log("Ds")
-    console.log(newAccount);
-    console.log("asf")
-    console.log(wallet)
-
-    console.log("eathersWallet");
-    const eathersWallet = Wallet.fromMnemonic(generatedMnemonic);
-    console.log(eathersWallet);
-    console.log("new eathersWallet");
-    const eathersWalletnew = Wallet.fromMnemonic(generatedMnemonic);
-    console.log(eathersWalletnew);
+    const wallet = Wallet.fromMnemonic(generatedMnemonic, `m/44'/60'/0'/0/0`);
+    var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    const newAccount =  wallet.connect(provider);
     // // This line sets the account to context state so it can be used by the app
      setAccount(newAccount);
   }, []);

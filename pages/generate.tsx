@@ -15,7 +15,7 @@ const Phrase: NextPage = () => {
     <>
       <h1 className={"title"}>Create New Wallet</h1>
 
-      <p>Generate a key phrase to set up your Solana wallet.</p>
+      <p>Generate a key phrase to set up your Etherium wallet.</p>
 
       {!loading && (
         <Link href={`/phrase`} passHref>

@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
       <HomeTitle>
         A simple, non-custodial crypto wallet for managing{" "}
-        <a href="https://solana.com/">Solana</a> digital assets.
+        <a href="https://ethereum.org/en/">Etherium</a> digital assets.
       </HomeTitle>
 
       <HomeGrid>
