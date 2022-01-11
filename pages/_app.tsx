@@ -8,7 +8,7 @@ import Layout from '../components/Layout';
 import { Wallet } from "ethers";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [network, setNetwork] = useState<String | undefined>("devnet");
+  const [network, setNetwork] = useState<String | undefined>("homestead");
   const [account, setAccount] = useState<Wallet | null>(null);
   const [mnemonic, setMnemonic] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
