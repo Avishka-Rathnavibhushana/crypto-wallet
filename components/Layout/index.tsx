@@ -12,7 +12,7 @@ import styles from "./index.module.css";
 import { useGlobalState } from "../../context";
 import { useRouter } from "next/router";
 import { Cluster } from "@solana/web3.js";
-import { Wallet, utils } from "ethers";
+import { Wallet, utils, ethers } from "ethers";
 import { InfuraProvider } from "@ethersproject/providers";
 import { refreshBalance } from "../../utils";
 
@@ -29,15 +29,24 @@ const Layout = ({ children }: { children: JSX.Element }): ReactElement => {
   const router = useRouter();
 
   const selectNetwork = async (e: DomEvent) => {
-    const networks: Array<string> = ["homestead", "rinkeby"];
+    const networks: Array<string> = ["homestead", "rinkeby", "fuji"];
     const selectedNetwork = networks[parseInt(e.key) - 1];
+    console.log(selectedNetwork);
     setNetwork(selectedNetwork);
 
     var inputMnemonic = mnemonic == null ? "":mnemonic;
     const wallet = Wallet.fromMnemonic(inputMnemonic, `m/44'/60'/0'/0/0`);
-    const preAccount = account == null? wallet: account;
-    var provider = new InfuraProvider(selectedNetwork, "7ee79ae6d89a4df88ba9f65942c4b4ca");
-    const newAccount =  preAccount.connect(provider);
+    const preAccount = account == null ? wallet : account;
+    var provider ;
+    var newAccount ;
+    if (selectedNetwork=="fuji") {
+      provider = new ethers.providers.JsonRpcProvider("https://api.avax-test.network/ext/bc/C/rpc");
+      newAccount =  preAccount.connect(provider);
+    } else {
+      provider = new InfuraProvider(selectedNetwork, "7ee79ae6d89a4df88ba9f65942c4b4ca");
+      newAccount =  preAccount.connect(provider);
+    }
+    
     // // This line sets the account to context state so it can be used by the app
     setAccount(newAccount);
     
@@ -51,6 +60,9 @@ const Layout = ({ children }: { children: JSX.Element }): ReactElement => {
       </Menu.Item>
       <Menu.Item onClick={selectNetwork} key="2">
         Rinkeby {network === "rinkeby" && <Badge status="processing" />}
+      </Menu.Item>
+      <Menu.Item onClick={selectNetwork} key="2">
+        Fuji {network === "fuji" && <Badge status="processing" />}
       </Menu.Item>
     </Menu>
   );
