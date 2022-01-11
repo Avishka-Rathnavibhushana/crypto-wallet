@@ -7,7 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import Web3 from "web3";
 import * as Bip39 from "bip39";
-import {Wallet, utils, BigNumber} from "ethers";
+import {Wallet, utils, BigNumber, ethers} from "ethers";
 import { Provider } from "@ethersproject/abstract-provider";
 import { InfuraProvider } from "@ethersproject/providers";
 
@@ -50,7 +50,8 @@ const Recover: NextPage = () => {
 
     const wallet = Wallet.fromMnemonic(inputMnemonic, `m/44'/60'/0'/0/0`);
     console.log(wallet);
-    var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    //var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/mainnet");
     const newAccount = wallet.connect(provider);
     console.log(newAccount);
 

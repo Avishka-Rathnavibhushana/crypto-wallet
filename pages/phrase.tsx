@@ -7,7 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import * as Bip39 from "bip39";
 import Web3 from "web3";
-import { Wallet, utils } from "ethers";
+import { Wallet, utils, ethers } from "ethers";
 import { InfuraProvider } from "@ethersproject/providers";
 
 
@@ -43,7 +43,8 @@ const Phrase: NextPage = () => {
     //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
     
     const wallet = Wallet.fromMnemonic(generatedMnemonic, `m/44'/60'/0'/0/0`);
-    var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    //var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/mainnet");
     const newAccount =  wallet.connect(provider);
     // // This line sets the account to context state so it can be used by the app
      setAccount(newAccount);

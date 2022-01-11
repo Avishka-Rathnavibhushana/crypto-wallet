@@ -12,12 +12,16 @@ import {
   Question,
 } from "../styles/StyledComponents.styles";
 
+
+
 const { Paragraph } = Typography;
 
 const Wallet: NextPage = () => {
   const { network, account, balance, setBalance } = useGlobalState();
   const [visible, setVisible] = useState<boolean>(false);
   const [airdropLoading, setAirdropLoading] = useState<boolean>(false);
+
+  const [avaMnemonic, setavaMnemonic] = useState<string>("");
 
   const router = useRouter();
 
@@ -35,14 +39,6 @@ const Wallet: NextPage = () => {
       });
   }, [account, router, network]);
 
-  // const airdrop = async () => {
-  //   setAirdropLoading(true);
-  //   const updatedBalance = await handleAirdrop(network, account);
-  //   if (typeof updatedBalance === "number") {
-  //     setBalance(updatedBalance);
-  //   }
-  //   setAirdropLoading(false);
-  // };
 
   const showModal = () => {
     setVisible(true);
@@ -65,6 +61,7 @@ const Wallet: NextPage = () => {
   const displayAddress = (address: string) =>
     `${address.slice(0, 4)}...${address.slice(-4)}`;
 
+
   return (
     <>
       {account && (
@@ -82,7 +79,7 @@ const Wallet: NextPage = () => {
             {network &&
               (network === "homestead"
                 ? network.charAt(0).toUpperCase() + network.slice(1, 7)
-                : network.charAt(0).toUpperCase() + network.slice(1))}
+                : network === "rinkeby"? network.charAt(0).toUpperCase() + network.slice(1): "Fuji")}
           </p>
           {airdropLoading ? (
             <h2>
@@ -90,7 +87,7 @@ const Wallet: NextPage = () => {
             </h2>
           ) : (
             <h2>
-              {balance} <span>ETH</span>
+              {balance} <span>{network === "testnet"?"AVAX":"ETH"}</span>
             </h2>
           )}
 
