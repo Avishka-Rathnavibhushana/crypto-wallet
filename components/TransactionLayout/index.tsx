@@ -86,7 +86,7 @@ const TransactionModal = (): ReactElement => {
       const signers = [{}];
 
       var tx = {
-        to: "0xC8b1a4B84d9578EA521c15C2d40982b09D1a0684",
+        to: form.to,
         value: utils.parseEther((form.amount/1000).toString())
       }
 
