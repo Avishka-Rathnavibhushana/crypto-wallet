@@ -59,44 +59,22 @@ const TransactionModal = (): ReactElement => {
     if (!account) return;
 
     try {
-      // (a) review the import guidance on line 1
-      // (b) instantiate a connection using clusterApiUrl with the active network passed in as an argument
-      // Documentation References:
-      //   https://solana-labs.github.io/solana-web3.js/classes/Connection.html
-      //   https://solana-labs.github.io/solana-web3.js/modules.html#clusterApiUrl
-      console.log("Sign and Send not yet implemented!");
-      const connection = "";
       setTransactionSig("");
-      // (c) leverage the SystemProgram class to create transfer instructions that include your account's public key, the public key from your sender field in the form, and the amount from the form
-      // Documentation Reference:
-      //   https://solana-labs.github.io/solana-web3.js/classes/SystemProgram.html
-      //   https://solana-labs.github.io/solana-web3.js/classes/SystemProgram.html#transfer
-      const instructions = {};
 
-      // (d) instantiate a transaction object and add the instructions
-      // Documentation Reference:
-      //   https://solana-labs.github.io/solana-web3.js/classes/Transaction.html
-      //   https://solana-labs.github.io/solana-web3.js/classes/Transaction.html#add
-      const transaction = {};
-
-      // (e) use your account to create a signers interface
-      // Documentation Reference:
-      //   https://solana-labs.github.io/solana-web3.js/interfaces/Signer.html
-      //   note: signers is an array with a single item - an object with two properties
-      const signers = [{}];
-
+      // set transaction details
       var tx = {
         to: form.to,
         value: utils.parseEther((form.amount/1000).toString())
       }
 
       setSending(true);
-      // (f) send the transaction and await its confirmation
-      // Documentation Reference: https://solana-labs.github.io/solana-web3.js/modules.html#sendAndConfirmTransaction
       const confirmation = "";
       setTransactionSig(confirmation);
       var wallet = account;
+
+      // sign the transaction and await its confirmation
       await wallet.signTransaction(tx);
+      // send the transaction and await its confirmation
       await wallet.sendTransaction(tx);
       
       setSending(false);
@@ -104,13 +82,13 @@ const TransactionModal = (): ReactElement => {
       
       console.log(balance);
       if (network) {
+        //refresh page to update balance
         const updatedBalance = await refreshBalance(network, account);
         setBalance(updatedBalance);
         console.log(balance);
         console.log(updatedBalance);
         message.success(`Transaction confirmed`);
       }
-      // (g) You can now delete the console.log statement since the function is implemented!
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown Error";

@@ -8,8 +8,6 @@ import { refreshBalance } from "../utils";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import {
   Dashboard,
-  Airdrop,
-  Question,
 } from "../styles/StyledComponents.styles";
 
 
@@ -90,18 +88,6 @@ const Wallet: NextPage = () => {
               {balance} <span>{network === "testnet"?"AVAX":"ETH"}</span>
             </h2>
           )}
-
-          {/* {network === "devnet" && account && (
-            <>
-              <Airdrop onClick={airdrop}>Airdrop</Airdrop>
-              <Tooltip
-                title="Click to receive 1 devnet SOL into your account"
-                placement={"right"}
-              >
-                <Question>?</Question>
-              </Tooltip>
-            </>
-          )} */}
 
           <Button type="primary" onClick={showModal}>
             Send <ArrowRightOutlined />

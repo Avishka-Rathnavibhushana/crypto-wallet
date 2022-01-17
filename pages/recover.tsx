@@ -5,15 +5,8 @@ import { Form, Input, Button } from "antd";
 import { useGlobalState } from "../context";
 import { LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import Web3 from "web3";
 import * as Bip39 from "bip39";
 import {Wallet, utils, BigNumber, ethers} from "ethers";
-import { Provider } from "@ethersproject/abstract-provider";
-import { InfuraProvider } from "@ethersproject/providers";
-
-// Import Bip39 to convert a phrase to a seed:
-
-// Import the Keypair class from Solana's web3.js library:
 
 const Recover: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,35 +22,22 @@ const Recover: NextPage = () => {
     setLoading(true);
     const inputMnemonic = values.phrase.trim().toLowerCase();
     setMnemonic(inputMnemonic);
-    console.log(inputMnemonic);
+
     // (a) review the import guidance on lines 9 and 11
-    // (b) convert the mnemonic to seed bytes
-    // Documentation Reference: https://github.com/bitcoinjs/bip39
+    // converting the mnemonic to seed bytes
     const seed = Bip39.mnemonicToSeedSync(inputMnemonic).slice(0, 32).toString('utf8');
     console.log(seed);
-    // (c) use the seed to import the account (i.e. keypair)
-    // Documentation Reference:
-    //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
-    //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
-    // var web3 = new Web3('https://rinkeby.infura.io/v3/7ee79ae6d89a4df88ba9f65942c4b4ca')
-    // const wallet = web3.eth.accounts.wallet.create(1 ,seed);
-    // console.log("asf")
-    // console.log(wallet)
-    // const importedAccount =  web3.eth.accounts.create(seed);
-    // console.log("Ds")
-    // console.log(importedAccount);
-    // setAccount(importedAccount);
 
+    //use the mnemonic to import the account (i.e. keypair)
     const wallet = Wallet.fromMnemonic(inputMnemonic, `m/44'/60'/0'/0/0`);
     console.log(wallet);
-    //var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+
+    //connect provider to waller with RPC URL
     var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/mainnet");
     const newAccount = wallet.connect(provider);
     console.log(newAccount);
 
     setAccount(newAccount);
-
-    // (d) You can now delete the console.log statement since the function is implemented!
   };
 
   

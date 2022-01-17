@@ -29,14 +29,20 @@ const Layout = ({ children }: { children: JSX.Element }): ReactElement => {
   const router = useRouter();
 
   const selectNetwork = async (e: DomEvent) => {
+    //available network list
     const networks: Array<string> = ["homestead", "rinkeby", "testnet"];
+
+    // get and set selected network
     const selectedNetwork = networks[parseInt(e.key) - 1];
     setNetwork(selectedNetwork);
     console.log(selectedNetwork);
+
+
     var inputMnemonic = mnemonic == null ? "":mnemonic;
     const wallet = Wallet.fromMnemonic(inputMnemonic, `m/44'/60'/0'/0/0`);
-    const preAccount = account == null? wallet: account;
-    //var provider = new InfuraProvider(selectedNetwork, "7ee79ae6d89a4df88ba9f65942c4b4ca");
+    const preAccount = account == null ? wallet : account;
+    
+    // connect the wallet to a provider
     var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/mainnet");
     if (selectedNetwork=="rinkeby") {
       var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/rinkeby");
@@ -45,9 +51,10 @@ const Layout = ({ children }: { children: JSX.Element }): ReactElement => {
     }
     
     const newAccount =  preAccount.connect(provider);
-    // // This line sets the account to context state so it can be used by the app
+    // This line sets the account to context state so it can be used by the app
     setAccount(newAccount);
     
+    // refresh account balance of the selected network
     await refreshBalance(selectedNetwork,newAccount);
   };
 

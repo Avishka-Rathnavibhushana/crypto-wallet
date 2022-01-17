@@ -6,14 +6,7 @@ import { useGlobalState } from "../context";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import * as Bip39 from "bip39";
-import Web3 from "web3";
 import { Wallet, utils, ethers } from "ethers";
-import { InfuraProvider } from "@ethersproject/providers";
-
-
-// Import Bip39 to generate a phrase and convert it to a seed:
-
-// Import the Keypair class from Solana's web3.js library:
 
 const Phrase: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,29 +17,23 @@ const Phrase: NextPage = () => {
 
   useEffect(() => {
     // *Step 2*: implement a function that generates a mnemonic when the page renders, and uses it to create a wallet (i.e. account)
-    // (a) review the import guidance on lines 9 and 11
-    // (b) generate a mnemonic phrase by importing Bip39 and then implementing the appropriate method on the imported Bip39 instance
-    // Documentation Reference: https://github.com/bitcoinjs/bip39
     const generatedMnemonic = Bip39.generateMnemonic();
 
     // This line saves the mnemonic phrase to context state so we can display it for the wallet user to copy
     setMnemonic(generatedMnemonic);
 
-    // (c) convert the mnemonic to seed bytes and make sure it's 32-bytes (Hint: console log the seed to see how many bytes you have vs how many you need)
-    // Documentation Reference: https://github.com/bitcoinjs/bip39
+    // convert the mnemonic to seed bytes and make sure it's 32-bytes (Hint: console log the seed to see how many bytes you have vs how many you need)
     const seed = Bip39.mnemonicToSeedSync(generatedMnemonic).slice(0, 32).toString('utf8');  //slice 64 byte seed from 0-32 to get first 32 bytes
     console.log(seed);
 
-    // (d) use the seed to generate a new account (i.e. a new keypair)
-    // Documentation Reference:
-    //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html
-    //   https://solana-labs.github.io/solana-web3.js/classes/Keypair.html#fromSeed
-    
+    // use the mnemonic words to generate a new account (i.e. a new keypair)
     const wallet = Wallet.fromMnemonic(generatedMnemonic, `m/44'/60'/0'/0/0`);
-    //var provider = new InfuraProvider("homestead", "7ee79ae6d89a4df88ba9f65942c4b4ca");
+
+    // connect provider to wallet
     var provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/80c6b8d33d8624b5b3456022/eth/mainnet");
     const newAccount =  wallet.connect(provider);
-    // // This line sets the account to context state so it can be used by the app
+    
+    // This line sets the account to context state so it can be used by the app
      setAccount(newAccount);
   }, []);
 
