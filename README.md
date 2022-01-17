@@ -8,7 +8,7 @@ This is a cryptocurrency wallet to view and do transactions with etheruim networ
 
 2. First run "npm install" to install all the dependancies
 
-3. Then run "npm run dev" to start the unser interface server
+3. Then run "npm run dev" to start the user interface server
    Then the server will be run on the link "http://localhost:3000"
 
 ## How to use - special notes
