@@ -13,7 +13,7 @@ This is a cryptocurrency wallet to view and do transactions with etheruim networ
 
 ## How to use - special notes
 
-1. can change network from the drop down list in the top right corner.\n
+1. can change network from the drop down list in the top right corner./n
    click on each to chnage network.
    It will automatically refreshes the balance.
 
