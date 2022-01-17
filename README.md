@@ -25,7 +25,7 @@ This is a cryptocurrency wallet to view and do transactions with etheruim networ
 
 2.  add public key of the sender in "pay to the order of text box"
 
-3.  add amount in second box
+3.  add amount in second box.
     Cannot type floting point numbers.
     configered the text box as 1000 = 1 ETH (or 1 AVAX) according to the network.
 
